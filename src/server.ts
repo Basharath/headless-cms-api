@@ -6,4 +6,4 @@ const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
 
 // eslint-disable-next-line no-console
-server.listen(PORT, () => console.log(`Started listing on ${PORT}`));
+server.listen(PORT, () => console.log(`Started listening on ${PORT}`));

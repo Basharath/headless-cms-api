@@ -1,7 +1,7 @@
-import AWS from 'aws-sdk';
+import { config, DynamoDB } from 'aws-sdk';
 
-AWS.config.update({ region: 'ap-south-1' });
+config.update({ region: 'ap-south-1' });
 
-const documentClient = new AWS.DynamoDB.DocumentClient();
+const documentClient = new DynamoDB.DocumentClient();
 
 export default documentClient;

@@ -9,6 +9,8 @@ import posts from './routes/posts';
 import users from './routes/users';
 import categories from './routes/categories';
 import tags from './routes/tags';
+import notFound from './middleware/404';
+import error from './middleware/error';
 
 const app: Application = express();
 
@@ -23,5 +25,8 @@ app.use('/tags', tags);
 app.get('/', (req: Request, res: Response) =>
   res.send('Welcome to the Headless CMS')
 );
+
+app.use(notFound);
+app.use(error);
 
 export default app;

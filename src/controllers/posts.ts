@@ -13,6 +13,7 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
     } else {
       const data = await (await Post.find()).promise();
       result = data.Items;
+      result = result?.sort((a, b) => b.modified - a.modified);
     }
     if (!result) return res.status(404).json({ message: 'No post(s) found' });
 
@@ -29,9 +30,12 @@ const addPost = async (req: Request, res: Response, next: NextFunction) => {
   const { postId, ...rest } = req.body;
   if (postId) return res.status(400).send('Post already exists');
 
+  const now = new Date().getTime();
   const postData = {
     postId: `m${nanoid()}`,
     ...rest,
+    published: now,
+    modified: now,
   };
 
   try {
@@ -47,12 +51,13 @@ const updatePost = async (req: Request, res: Response, next: NextFunction) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const postId = req.params.id || '0';
-
+  const now = new Date().getTime();
   try {
     const data = await (await Post.findOne(postId)).promise();
     if (!data.Item) return res.status(404).send('No post exists');
 
-    const result = await (await Post.update(req.body)).promise();
+    const postData = { ...req.body, modified: now };
+    const result = await (await Post.update(postData)).promise();
     return res.json(result.Attributes);
   } catch (err) {
     return next(err);
@@ -76,5 +81,4 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { getPosts, addPost, updatePost, deletePost };
+export default { getPosts, addPost, updatePost, deletePost };

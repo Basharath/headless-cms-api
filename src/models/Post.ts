@@ -30,7 +30,7 @@ const findOne = async (id: string) => {
   return db.get(params);
 };
 
-// Is not used for inserting
+// Is not used for inserting 😃
 const insert = async (data: PostData) => {
   const params: ParamPut = {
     TableName: TABLE,
@@ -76,16 +76,16 @@ const remove = async (id: string) => {
 
 const validate = (post: PostData) => {
   const schema = Joi.object({
-    postId: Joi.string().label('Post ID'),
-    published: Joi.string().required().label('Created date'),
-    modified: Joi.string().required().label('Updated date'),
-    slug: Joi.string().required().label('Slug'),
+    postId: Joi.string().length(17).label('Post ID'),
+    published: Joi.number().label('Published date'),
+    modified: Joi.number().label('Modified date'),
+    slug: Joi.string().min(5).max(100).required().label('Slug'),
     status: Joi.string().required().label('Status'),
     type: Joi.string().required().label('type'),
-    title: Joi.string().required().label('Title'),
+    title: Joi.string().min(5).max(100).required().label('Title'),
     excerpt: Joi.string().required().label('Excerpt'),
-    content: Joi.string().required().label('Content'),
-    author: Joi.string().required().label('Author'),
+    content: Joi.string().min(100).required().label('Content'),
+    author: Joi.string().min(4).max(15).required().label('Author'),
     tags: Joi.array().items(Joi.string()).required().label('Tags'),
     thumbnail: Joi.string().required().label('Thumbnail'),
     images: Joi.array().items(Joi.string()).label('Images'),

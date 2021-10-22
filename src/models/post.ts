@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
 import Joi from 'joi';
 
-import { PostData } from '../types';
+import { PostType } from '../types';
 
-const postSchema = new Schema<PostData>(
+const postSchema = new Schema<PostType>(
   {
     slug: { type: String, unique: true, maxlength: 100 },
     status: { type: String, required: true },
@@ -11,8 +11,13 @@ const postSchema = new Schema<PostData>(
     title: { type: String, required: true, minlength: 5, maxlength: 100 },
     excerpt: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: String, required: true }, // TODO: replace by UserSchema
-    tags: { type: [String], required: true }, // TODO: replace by TagsSchema
+    author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    tags: { type: [Schema.Types.ObjectId], ref: 'Tag', required: true },
+    categories: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Category',
+      required: true,
+    },
     thumbnail: { type: String, required: true },
     images: { type: [String], required: true },
   },
@@ -21,7 +26,7 @@ const postSchema = new Schema<PostData>(
 
 const Post = model('Post', postSchema);
 
-const validate = (post: PostData) => {
+const validate = (post: PostType) => {
   const schema = Joi.object({
     createdAt: Joi.string().label('Published date'),
     updatedAt: Joi.string().label('Modified date'),
@@ -33,6 +38,7 @@ const validate = (post: PostData) => {
     content: Joi.string().min(100).required().label('Content'),
     author: Joi.string().min(4).max(15).required().label('Author'),
     tags: Joi.array().items(Joi.string()).required().label('Tags'),
+    categories: Joi.array().items(Joi.string()).required(),
     thumbnail: Joi.string().required().label('Thumbnail'),
     images: Joi.array().items(Joi.string()).label('Images'),
   });

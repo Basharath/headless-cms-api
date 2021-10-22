@@ -5,6 +5,7 @@ import express, {
   json,
   urlencoded,
 } from 'express';
+import dotenv from 'dotenv';
 import posts from './routes/posts';
 import users from './routes/users';
 import categories from './routes/categories';
@@ -12,6 +13,7 @@ import tags from './routes/tags';
 import notFound from './middleware/404';
 import error from './middleware/error';
 
+dotenv.config();
 const app: Application = express();
 
 app.use(json());

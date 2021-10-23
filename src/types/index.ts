@@ -1,31 +1,47 @@
-import { DynamoDB } from 'aws-sdk';
-// export interface PostData {
-//   postId: string;
-//   published: string;
-//   modified: string;
-//   slug: string;
-//   status: string;
-//   type: string;
-//   title: string;
-//   excerpt: string;
-//   content: string;
-//   author: string;
-//   tags: string[];
-//   thumbnail: string;
-//   images: string[];
-// }
+import { ObjectId } from 'mongoose';
+
+export interface PostType {
+  createdAt?: string;
+  updatedAt?: string;
+  slug: string;
+  status: string;
+  type: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: ObjectId;
+  tags: ObjectId[];
+  categories: ObjectId[];
+  thumbnail: string;
+  images: string[];
+}
+
+export interface CategoryType {
+  name: string;
+}
+
+export interface TagType {
+  name: string;
+}
+
+export interface UserType {
+  name: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+}
+
+export interface PassType {
+  oldPassword: string;
+  newPassword: string;
+}
 
 // export type PostData = {
 //   [key: string]: string | string[],
 // }
 
 // This line is equivalent to the above two
-export type PostData = Record<string, string | string[]>;
-export type ParamGet = DynamoDB.DocumentClient.GetItemInput;
-export type ParamScan = DynamoDB.DocumentClient.ScanInput;
-export type ParamPut = DynamoDB.DocumentClient.PutItemInput;
-export type ParamUpdate = DynamoDB.DocumentClient.UpdateItemInput;
-export type ParamDelete = DynamoDB.DocumentClient.DeleteItemInput;
+// export type PostData = Record<string, string | string[]>;
 
 export interface HttpError extends Error {
   status?: number;

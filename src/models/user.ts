@@ -26,14 +26,14 @@ const userSchema = new Schema<UserType>({
 });
 
 userSchema.methods.generateToken = function genToken() {
+  const secret: string = process.env.jwtPrivateKey as string;
   const token = jwt.sign(
     {
-      // eslint-disable-next-line no-underscore-dangle
       id: this._id,
       isAdmin: this.isAdmin,
       name: this.name,
     },
-    'SomeSecret', // process.env.jwtPrivateKey,
+    secret,
     {
       expiresIn: '1hr',
     }

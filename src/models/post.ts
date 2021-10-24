@@ -20,8 +20,9 @@ const postSchema = new Schema<PostType>(
     },
     thumbnail: { type: String, required: true },
     images: { type: [String], required: true },
+    updatedAt: { type: Date, default: Date.now },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { createdAt: true }, versionKey: false }
 );
 
 const Post = model('Post', postSchema);
@@ -46,7 +47,4 @@ const validate = (post: PostType) => {
   return schema.validate(post);
 };
 
-export default {
-  Post,
-  validate,
-};
+export { Post, validate };

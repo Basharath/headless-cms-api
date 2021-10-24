@@ -18,4 +18,4 @@ const validate = (category: CategoryType) => {
   return schema.validate(category);
 };
 
-export { Category, validate, categorySchema };
+export { Category, validate };

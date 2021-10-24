@@ -18,4 +18,4 @@ const validate = (tag: TagType) => {
   return schema.validate(tag);
 };
 
-export { Tag, validate, tagSchema };
+export { Tag, validate };

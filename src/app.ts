@@ -5,7 +5,7 @@ import express, {
   json,
   urlencoded,
 } from 'express';
-import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import posts from './routes/posts';
 import users from './routes/users';
 import categories from './routes/categories';
@@ -13,7 +13,13 @@ import tags from './routes/tags';
 import notFound from './middleware/404';
 import error from './middleware/error';
 
-dotenv.config();
+const db = process.env.db as string;
+
+mongoose
+  .connect(db)
+  .then(() => console.log('Connected to MongoDb'))
+  .catch((err) => console.log(err.message));
+
 const app: Application = express();
 
 app.use(json());

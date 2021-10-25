@@ -29,6 +29,7 @@ export interface UserType {
   email: string;
   password: string;
   isAdmin: boolean;
+  generateToken: () => string;
 }
 
 export interface PassType {
@@ -36,6 +37,9 @@ export interface PassType {
   newPassword: string;
 }
 
+// export interface RequestUser extends Request {
+//   user: Record<string, string>;
+// }
 // export type PostData = {
 //   [key: string]: string | string[],
 // }

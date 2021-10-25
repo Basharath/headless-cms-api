@@ -22,7 +22,7 @@ const postSchema = new Schema<PostType>(
     images: { type: [String], required: true },
     updatedAt: { type: Date, default: Date.now },
   },
-  { timestamps: { createdAt: true }, versionKey: false }
+  { timestamps: { createdAt: true, updatedAt: false }, versionKey: false }
 );
 
 const Post = model('Post', postSchema);
@@ -37,7 +37,7 @@ const validate = (post: PostType) => {
     title: Joi.string().min(5).max(100).required().label('Title'),
     excerpt: Joi.string().required().label('Excerpt'),
     content: Joi.string().min(100).required().label('Content'),
-    author: Joi.string().min(4).max(15).required().label('Author'),
+    author: Joi.string().required().label('Author'),
     tags: Joi.array().items(Joi.string()).required().label('Tags'),
     categories: Joi.array().items(Joi.string()).required(),
     thumbnail: Joi.string().required().label('Thumbnail'),

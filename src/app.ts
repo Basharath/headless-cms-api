@@ -6,6 +6,7 @@ import express, {
   urlencoded,
 } from 'express';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import posts from './routes/posts';
 import users from './routes/users';
 import categories from './routes/categories';
@@ -22,6 +23,7 @@ mongoose
 
 const app: Application = express();
 
+app.use(cookieParser());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 

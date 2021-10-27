@@ -37,6 +37,12 @@ export interface PassType {
   newPassword: string;
 }
 
+export interface DecodedType {
+  id: string;
+  name: string;
+  email: string;
+}
+
 // export interface RequestUser extends Request {
 //   user: Record<string, string>;
 // }

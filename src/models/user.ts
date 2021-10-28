@@ -7,7 +7,7 @@ import { UserType, PassType } from '../types';
 const userSchema = new Schema<UserType>({
   name: {
     type: String,
-    minlength: 5,
+    minlength: 3,
     maxlength: 50,
     trim: true,
     required: true,
@@ -26,7 +26,7 @@ const userSchema = new Schema<UserType>({
 });
 
 userSchema.methods.generateToken = function genToken() {
-  const secret: string = process.env.jwtPrivateKey as string;
+  const secret: string = <string>process.env.jwtPrivateKey;
   const token = jwt.sign(
     {
       id: this._id,
@@ -35,7 +35,7 @@ userSchema.methods.generateToken = function genToken() {
     },
     secret,
     {
-      expiresIn: '1hr',
+      expiresIn: '24hr',
     }
   );
   return token;
@@ -45,7 +45,7 @@ const User = model('User', userSchema);
 
 const validateUser = (user: UserType) => {
   const schema = Joi.object({
-    name: Joi.string().min(5).max(50).label('Name'),
+    name: Joi.string().min(3).max(50).label('Name'),
     email: Joi.string().email().min(4).max(255).required().label('Email'),
     password: Joi.string().min(8).max(15).required().label('Password'),
   });

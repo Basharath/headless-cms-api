@@ -13,6 +13,7 @@ export default function routes(app: Application) {
   app.use('/users', users);
   app.use('/categories', categories);
   app.use('/tags', tags);
+  app.use('/', posts);
 
   app.get('/', (req: Request, res: Response) =>
     res.send('Welcome to the Headless CMS')

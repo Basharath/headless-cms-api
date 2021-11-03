@@ -1,18 +1,65 @@
 import { Request, Response, NextFunction } from 'express';
+// import { ObjectId } from 'mongoose';
 import { Post, validate } from '../models/post';
 
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   const postId = req.params.id;
 
+  const { page: p, limit: l = 8 } = req.query;
+  const skip = p && l ? +l * (+p - 1) : 0;
+
   try {
     let result;
-    if (postId) {
-      const data = await Post.findById(postId);
-      result = data;
-    } else {
-      const data = await Post.find();
-      result = data;
-    }
+    if (postId) result = await Post.findById(postId);
+    else if (p && l)
+      result = await Post.find({}, {}, { skip, limit: +l, sort: '-updatedAt' });
+    else
+      result = await Post.find().sort('-updatedAt').populate({ path: 'tags' });
+
+    if (!result) return res.status(404).json({ message: 'No post(s) found' });
+
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const postsByTags = async (req: Request, res: Response, next: NextFunction) => {
+  const tagId = req.params.tag;
+
+  try {
+    // @ts-ignore
+    const result = await Post.find({
+      tags: { $in: [tagId] },
+    })
+      .sort('-updatedAt')
+      .populate('tags')
+      .populate('categories');
+
+    if (!result) return res.status(404).json({ message: 'No post(s) found' });
+
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const postsByCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const categoryId = req.params.category;
+
+  try {
+    // @ts-ignore
+    const result = await Post.find({
+      categories: { $in: [categoryId] },
+    })
+      .sort('-updatedAt')
+      .populate('tags')
+      .populate('categories');
+
     if (!result) return res.status(404).json({ message: 'No post(s) found' });
 
     return res.json(result);
@@ -126,4 +173,11 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { getPosts, addPost, updatePost, deletePost };
+export default {
+  getPosts,
+  postsByTags,
+  postsByCategory,
+  addPost,
+  updatePost,
+  deletePost,
+};

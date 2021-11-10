@@ -9,11 +9,11 @@ import error from '../middleware/error';
 export default function routes(app: Application) {
   app.use(json());
   app.use(urlencoded({ extended: false }));
-  app.use('/posts', posts);
-  app.use('/users', users);
-  app.use('/categories', categories);
-  app.use('/tags', tags);
-  app.use('/', posts);
+  app.use('/api/posts', posts);
+  app.use('/api/users', users);
+  app.use('/api/categories', categories);
+  app.use('/api/tags', tags);
+  app.use('/api/', posts);
 
   app.get('/', (req: Request, res: Response) =>
     res.send('Welcome to the Headless CMS')

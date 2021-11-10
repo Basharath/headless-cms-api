@@ -19,7 +19,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
     const token = user.generateToken();
     res.cookie('token', token, { httpOnly: true });
 
-    return res.send({ token });
+    return res.send('Successfully logged in.');
   } catch (err) {
     return next(err);
   }
@@ -42,10 +42,17 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     const token = user.generateToken();
     res.cookie('token', token, { httpOnly: true });
 
-    return res.status(201).send({ id: user._id, email, token });
+    // return res.status(201).send({ id: user._id, email, token });
+    return res.status(201).send('Successfully signed up.');
   } catch (err) {
     return next(err);
   }
+};
+
+const userData = async (req: Request, res: Response) => {
+  const data = req.user;
+  if (data) return res.send(data);
+  return res.status(401).send('Not logged in');
 };
 
 const changePassword = async (
@@ -78,4 +85,4 @@ const changePassword = async (
   }
 };
 
-export { signIn, signUp, changePassword };
+export { signIn, signUp, changePassword, userData };

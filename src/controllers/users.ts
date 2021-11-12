@@ -55,6 +55,11 @@ const userData = async (req: Request, res: Response) => {
   return res.status(401).send('Not logged in');
 };
 
+const signOut = async (req: Request, res: Response) => {
+  res.clearCookie('token');
+  res.redirect('/');
+};
+
 const changePassword = async (
   req: Request,
   res: Response,
@@ -85,4 +90,4 @@ const changePassword = async (
   }
 };
 
-export { signIn, signUp, changePassword, userData };
+export { signIn, signUp, changePassword, userData, signOut };

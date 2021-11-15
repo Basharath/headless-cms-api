@@ -14,7 +14,7 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
     else if (p && l)
       result = await Post.find({}, {}, { skip, limit: +l, sort: '-updatedAt' });
     else
-      result = await Post.find().sort('-updatedAt').populate({ path: 'tags' });
+      result = await Post.find().sort('-updatedAt').populate('tags categories');
 
     if (!result) return res.status(404).json({ message: 'No post(s) found' });
 

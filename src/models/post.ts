@@ -25,6 +25,14 @@ const postSchema = new Schema<PostType>(
   { timestamps: { createdAt: true, updatedAt: false }, versionKey: false }
 );
 
+postSchema.set('toJSON', {
+  virtuals: true,
+  transform(doc, ret) {
+    // eslint-disable-next-line no-param-reassign
+    delete ret._id;
+  },
+});
+
 const Post = model('Post', postSchema);
 
 const validate = (post: PostType) => {

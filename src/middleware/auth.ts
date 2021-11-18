@@ -4,12 +4,18 @@ import { DecodedType } from '../types';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
-  const token = authorization;
+  const { token: cookieToken } = req.cookies;
+  const authToken = authorization;
 
-  if (!token) return res.status(401).send('Access denied. No token provided.');
+  if (!authToken && !cookieToken)
+    return res.status(401).send('Access denied. No token provided.');
 
+  const finalToken = authToken || cookieToken;
   try {
-    const decodedData = jwt.verify(token, <string>process.env.jwtPrivateKey);
+    const decodedData = jwt.verify(
+      finalToken,
+      <string>process.env.jwtPrivateKey
+    );
     req.user = <DecodedType>decodedData;
 
     return next();

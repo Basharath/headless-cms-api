@@ -17,7 +17,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).send('Invalid email or password');
 
     const token = user.generateToken();
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'none' });
 
     return res.send('Successfully logged in.');
   } catch (err) {
@@ -40,7 +40,11 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     await user.save();
 
     const token = user.generateToken();
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
 
     // return res.status(201).send({ id: user._id, email, token });
     return res.status(201).send('Successfully signed up.');

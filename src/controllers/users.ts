@@ -19,10 +19,14 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
     const token = user.generateToken();
     res.cookie('token', token, {
       httpOnly: true,
+      path: '/',
       sameSite: 'none',
       secure: true,
+      domain: '.herokuapp.com',
     });
 
+    // @ts-ignore
+    // res.setHeader('Access-Control-Allow-Credentials', true);
     return res.send('Successfully logged in.');
   } catch (err) {
     return next(err);
@@ -46,8 +50,10 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     const token = user.generateToken();
     res.cookie('token', token, {
       httpOnly: true,
+      path: '/',
       sameSite: 'none',
       secure: true,
+      domain: '.herokuapp.com',
     });
 
     // return res.status(201).send({ id: user._id, email, token });

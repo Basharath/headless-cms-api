@@ -15,6 +15,7 @@ export default function prod(app: Application) {
           : process.env.SITE,
       optionsSuccessStatus: 200,
       credentials: true,
+      exposedHeaders: 'set-cookie',
     })
   );
   // app.use((req, res, next) => {

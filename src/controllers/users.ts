@@ -22,7 +22,6 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
       path: '/',
       sameSite: 'none',
       secure: true,
-      domain: '.herokuapp.com',
     });
 
     // @ts-ignore
@@ -53,7 +52,6 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
       path: '/',
       sameSite: 'none',
       secure: true,
-      domain: '.herokuapp.com',
     });
 
     // return res.status(201).send({ id: user._id, email, token });

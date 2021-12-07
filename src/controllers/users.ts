@@ -17,7 +17,11 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).send('Invalid email or password');
 
     const token = user.generateToken();
-    res.cookie('token', token, { httpOnly: true, sameSite: 'none' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
 
     return res.send('Successfully logged in.');
   } catch (err) {

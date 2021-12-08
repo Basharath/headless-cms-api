@@ -9,6 +9,7 @@ const {
   addPost,
   updatePost,
   deletePost,
+  deleteImage,
 } = posts;
 
 router.get('/', getPosts);
@@ -17,6 +18,7 @@ router.get('/category/:category', postsByCategory);
 router.get('/:id', getPosts);
 router.post('/', addPost);
 router.put('/:id', updatePost);
+router.delete('/image', deleteImage);
 router.delete('/:id', deletePost);
 
 export default router;

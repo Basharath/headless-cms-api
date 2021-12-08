@@ -2,6 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 // import { ObjectId } from 'mongoose';
 import { Post, validate } from '../models/post';
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.cloudApiKey,
+  api_secret: process.env.cloudApiSecret,
+  secure: true,
+});
+
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   const postId = req.params.id;
 
@@ -173,6 +182,17 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const deleteImage = async (req: Request, res: Response, next: NextFunction) => {
+  const publicId = req.query.id;
+
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export default {
   getPosts,
   postsByTags,
@@ -180,4 +200,5 @@ export default {
   addPost,
   updatePost,
   deletePost,
+  deleteImage,
 };

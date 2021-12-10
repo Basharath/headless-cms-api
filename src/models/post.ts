@@ -42,12 +42,12 @@ const validate = (post: PostType) => {
     status: Joi.string().required().label('Status'),
     type: Joi.string().required().label('type'),
     title: Joi.string().min(5).max(100).required().label('Title'),
-    excerpt: Joi.string().label('Excerpt'),
-    content: Joi.string().required().label('Content'),
+    excerpt: Joi.string().allow('').label('Excerpt'),
+    content: Joi.string().allow('').required().label('Content'),
     author: Joi.string().required().label('Author'),
     tags: Joi.array().items(Joi.string()).label('Tags'),
     categories: Joi.array().items(Joi.string()),
-    thumbnail: Joi.string().min(0).label('Thumbnail'),
+    thumbnail: Joi.string().allow(null, '').label('Thumbnail'),
     images: Joi.array().items(Joi.string()).label('Images'),
   });
 

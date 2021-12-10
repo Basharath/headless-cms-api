@@ -3,11 +3,13 @@ import { ObjectId } from 'mongoose';
 export interface PostType {
   createdAt?: string;
   updatedAt?: string;
+  modifiedAt?: string;
   slug: string;
   status: string;
   type: string;
   title: string;
   excerpt: string;
+  description: string;
   content: string;
   author: ObjectId;
   tags: ObjectId[];

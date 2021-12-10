@@ -10,6 +10,7 @@ const postSchema = new Schema<PostType>(
     type: { type: String, required: true },
     title: { type: String, required: true, minlength: 5, maxlength: 100 },
     excerpt: { type: String },
+    description: { type: String },
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     tags: { type: [Schema.Types.ObjectId], ref: 'Tag' },
@@ -21,7 +22,10 @@ const postSchema = new Schema<PostType>(
     images: { type: [String] },
     updatedAt: { type: Date, default: Date.now },
   },
-  { timestamps: { createdAt: true, updatedAt: false }, versionKey: false }
+  {
+    timestamps: { createdAt: true, updatedAt: 'modifiedAt' },
+    versionKey: false,
+  }
 );
 
 postSchema.set('toJSON', {
@@ -43,6 +47,7 @@ const validate = (post: PostType) => {
     type: Joi.string().required().label('type'),
     title: Joi.string().min(5).max(100).required().label('Title'),
     excerpt: Joi.string().allow('').label('Excerpt'),
+    description: Joi.string().allow('').label('Excerpt'),
     content: Joi.string().allow('').required().label('Content'),
     author: Joi.string().required().label('Author'),
     tags: Joi.array().items(Joi.string()).label('Tags'),

@@ -24,8 +24,6 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
       secure: true,
     });
 
-    // @ts-ignore
-    // res.setHeader('Access-Control-Allow-Credentials', true);
     return res.send('Successfully logged in.');
   } catch (err) {
     return next(err);
@@ -68,7 +66,7 @@ const userData = async (req: Request, res: Response) => {
 };
 
 const signOut = async (req: Request, res: Response) => {
-  res.clearCookie('token');
+  res.clearCookie('token', { path: '/', sameSite: 'none', secure: true });
   res.redirect('/');
 };
 

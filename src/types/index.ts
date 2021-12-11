@@ -10,6 +10,7 @@ export interface PostType {
   title: string;
   excerpt: string;
   description: string;
+  keyphrase: string;
   content: string;
   author: ObjectId;
   tags: ObjectId[];

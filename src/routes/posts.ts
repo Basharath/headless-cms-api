@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import posts from '../controllers/posts';
+import auth from '../middleware/auth';
 
 const router = Router();
 const {
@@ -16,9 +17,9 @@ router.get('/', getPosts);
 router.get('/tag/:tag', postsByTags);
 router.get('/category/:category', postsByCategory);
 router.get('/:id', getPosts);
-router.post('/', addPost);
-router.put('/:id', updatePost);
-router.delete('/image', deleteImage);
-router.delete('/:id', deletePost);
+router.post('/', auth, addPost);
+router.put('/:id', auth, updatePost);
+router.delete('/image', auth, deleteImage);
+router.delete('/:id', auth, deletePost);
 
 export default router;

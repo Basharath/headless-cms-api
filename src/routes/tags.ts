@@ -1,14 +1,15 @@
 import { Router } from 'express';
 import { getTags, addTag, updateTag, deleteTag } from '../controllers/tags';
+import auth from '../middleware/auth';
 
 const router = Router();
 
 router.get('/', getTags);
 
-router.post('/', addTag);
+router.post('/', auth, addTag);
 
-router.put('/:id', updateTag);
+router.put('/:id', auth, updateTag);
 
-router.delete('/:id', deleteTag);
+router.delete('/:id', auth, deleteTag);
 
 export default router;

@@ -43,7 +43,7 @@ export interface PassType {
 export interface DecodedType {
   id: string;
   name: string;
-  email: string;
+  isAdmin: boolean;
 }
 
 // export interface RequestUser extends Request {

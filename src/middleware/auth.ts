@@ -12,11 +12,13 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   const finalToken = authToken || cookieToken;
   try {
-    const decodedData = jwt.verify(
-      finalToken,
-      <string>process.env.jwtPrivateKey
+    const decodedData = <DecodedType>(
+      jwt.verify(finalToken, <string>process.env.jwtPrivateKey)
     );
-    req.user = <DecodedType>decodedData;
+
+    if (!decodedData.isAdmin)
+      return res.status(401).send("You don't have access to this action");
+    req.user = decodedData;
 
     return next();
   } catch (err) {

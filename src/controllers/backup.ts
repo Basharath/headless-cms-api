@@ -80,7 +80,7 @@ const backupCollection = async (
     zip.toBuffer();
     zip.writeZip(path.resolve('backup.zip'));
 
-    const filename = `devapt_${new Date().toISOString().slice(0, 10)}`;
+    const filename = `devapt_${new Date().toISOString().slice(0, 10)}.zip`;
 
     return res.download(path.resolve('backup.zip'), filename);
   } catch (err) {

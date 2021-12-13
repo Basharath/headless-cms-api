@@ -2,6 +2,26 @@ import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { User, validateUser, validatePassword } from '../models/user';
 
+const cookieOptions: {
+  httpOnly: boolean;
+  path: string;
+  sameSite: string;
+  secure: boolean;
+} =
+  process.env.NODE_ENV !== 'production'
+    ? {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'lax',
+        secure: false,
+      }
+    : {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'none',
+        secure: true,
+      };
+
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -17,12 +37,9 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).send('Invalid email or password');
 
     const token = user.generateToken();
-    res.cookie('token', token, {
-      httpOnly: true,
-      path: '/',
-      sameSite: 'none',
-      secure: true,
-    });
+
+    // @ts-ignore
+    res.cookie('token', token, cookieOptions);
 
     return res.send('Successfully logged in.');
   } catch (err) {
@@ -45,14 +62,10 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     await user.save();
 
     const token = user.generateToken();
-    res.cookie('token', token, {
-      httpOnly: true,
-      path: '/',
-      sameSite: 'none',
-      secure: true,
-    });
 
-    // return res.status(201).send({ id: user._id, email, token });
+    // @ts-ignore
+    res.cookie('token', token, cookieOptions);
+
     return res.status(201).send('Successfully signed up.');
   } catch (err) {
     return next(err);
@@ -66,7 +79,8 @@ const userData = async (req: Request, res: Response) => {
 };
 
 const signOut = async (req: Request, res: Response) => {
-  res.clearCookie('token', { path: '/', sameSite: 'none', secure: true });
+  res.clearCookie('token', cookieOptions);
+
   res.redirect('/');
 };
 

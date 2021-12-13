@@ -13,6 +13,7 @@ const {
   deleteImage,
 } = posts;
 
+// /api/posts?page=1&limit=8
 router.get('/', getPosts);
 router.get('/tag/:tag', postsByTags);
 router.get('/category/:category', postsByCategory);

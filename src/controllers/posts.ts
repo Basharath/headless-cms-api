@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Request, Response, NextFunction } from 'express';
 // import { ObjectId } from 'mongoose';
 import { Post, validate } from '../models/post';
@@ -12,16 +13,29 @@ cloudinary.config({
 });
 
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
-  const postId = req.params.id;
+  const postId: string = req.params.id || '';
 
-  const { page: p, limit: l = 8 } = req.query;
+  // @ts-ignore
+  const { page: p = '', limit: l = 8, slug = '' } = req.query;
+
   const skip = p && l ? +l * (+p - 1) : 0;
 
   try {
     let result;
     if (postId) result = await Post.findById(postId);
     else if (p && l)
-      result = await Post.find({}, {}, { skip, limit: +l, sort: '-updatedAt' });
+      result = await Post.find(
+        { status: 'Published' },
+        {},
+        { skip, limit: +l, sort: '-updatedAt' }
+      );
+    else if (slug)
+      result = await Post.findOne({
+        slug: slug.toLowerCase(),
+        status: 'Published',
+      })
+        .sort('-updatedAt')
+        .populate('tags categories');
     else
       result = await Post.find().sort('-updatedAt').populate('tags categories');
 

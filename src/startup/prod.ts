@@ -11,7 +11,6 @@ export default function prod(app: Application) {
     cors({
       // @ts-ignore
       origin: ['http://localhost:3000', process.env.SITE, process.env.SITE2],
-      methods: 'HEAD,PUT,PATCH,POST,DELETE',
       optionsSuccessStatus: 200,
       credentials: true,
     })

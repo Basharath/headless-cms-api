@@ -35,7 +35,18 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
         status: 'Published',
       })
         .sort('-updatedAt')
-        .populate('tags categories');
+        .populate([
+          {
+            path: 'tags',
+            model: 'Tag',
+            options: { sort: 'tags.name' },
+          },
+          {
+            path: 'categories',
+            model: 'Category',
+            options: { sort: 'categories.name' },
+          },
+        ]);
     else
       result = await Post.find().sort('-updatedAt').populate('tags categories');
 

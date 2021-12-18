@@ -16,20 +16,20 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   const postId: string = req.params.id || '';
 
   // @ts-ignore
-  const { page: p = '', limit: l = 8, slug = '' } = req.query;
+  const { page: p = '', limit: l = 8, slug = '', fields = '' } = req.query;
 
   const skip = p && l ? +l * (+p - 1) : 0;
 
   try {
     let result;
     if (postId) result = await Post.findById(postId);
-    else if (p && l)
+    else if (p && l) {
       result = await Post.find(
         { status: 'Published' },
         {},
         { skip, limit: +l, sort: '-updatedAt' }
-      );
-    else if (slug)
+      ).select('title slug updatedAt thumbnail status');
+    } else if (slug) {
       result = await Post.findOne({
         slug: slug.toLowerCase(),
         status: 'Published',
@@ -47,7 +47,15 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
             options: { sort: 'categories.name' },
           },
         ]);
-    else
+    } else if (fields === 'few') {
+      result = await Post.find()
+        .sort('-updatedAt')
+        .select('title slug updatedAt thumbnail status');
+    } else if (fields === 'slug') {
+      result = await Post.find({ status: 'Published' })
+        .sort('-updatedAt')
+        .select('slug title');
+    } else
       result = await Post.find().sort('-updatedAt').populate('tags categories');
 
     if (!result) return res.status(404).json({ message: 'No post(s) found' });

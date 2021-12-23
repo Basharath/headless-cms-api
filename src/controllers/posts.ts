@@ -175,6 +175,7 @@ const updatePost = async (req: Request, res: Response, next: NextFunction) => {
     thumbnail,
     images,
     updatedAt,
+    createdAt,
   } = req.body;
 
   try {
@@ -195,6 +196,7 @@ const updatePost = async (req: Request, res: Response, next: NextFunction) => {
         thumbnail,
         images,
         ...(updatedAt && { updatedAt }),
+        ...(createdAt && { createdAt }),
       },
       { new: true }
     );

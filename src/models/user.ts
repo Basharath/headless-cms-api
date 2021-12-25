@@ -35,7 +35,7 @@ userSchema.methods.generateToken = function genToken() {
     },
     secret,
     {
-      expiresIn: '24hr',
+      expiresIn: '48hr',
     }
   );
   return token;

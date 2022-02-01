@@ -8,7 +8,7 @@ export interface PostType {
   status: string;
   type: string;
   title: string;
-  excerpt: string;
+  imageTitle: string;
   description: string;
   keyphrase: string;
   content: string;

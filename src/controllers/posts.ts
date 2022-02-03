@@ -50,7 +50,7 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
     } else if (fields === 'few') {
       result = await Post.find()
         .sort('-updatedAt')
-        .select('title slug updatedAt thumbnail status');
+        .select('title imageTitle slug updatedAt thumbnail status');
     } else if (fields === 'slug') {
       result = await Post.find({ status: 'Published' })
         .sort('-updatedAt')

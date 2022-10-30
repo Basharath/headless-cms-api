@@ -5,8 +5,8 @@ import db from './startup/db';
 
 const app: Application = express();
 
+db();
 prod(app);
 routes(app);
-db();
 
 export default app;
